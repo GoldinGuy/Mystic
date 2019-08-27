@@ -22,7 +22,6 @@ class ChannelFireballScraper(ScraperBase):
         articles = []
 
         for entry in content:
-
             article = Article(
                 entry["title"],
                 entry["link"],

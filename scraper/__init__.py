@@ -26,7 +26,6 @@ class Scraper:
             self.scrapers.append(scraper())
 
     def run(self):
-        self.logger.info("Scraping mtggoldfish")
         articles = []
         for scraper in self.scrapers:
             articles.extend(scraper.scrape_articles())

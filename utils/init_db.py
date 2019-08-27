@@ -12,10 +12,11 @@ cur.execute(
 create table if not exists articles (
     title        text not null,
     url          text not null,
+    date         text,
     image_url    text,
     site_name    text not null,
     site_url     text not null,
-    author_name  int not null,
+    author_name  text not null,
     author_url   text
 );"""
 )

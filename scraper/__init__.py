@@ -1,10 +1,12 @@
 from typing import List
-
 import psycopg2
+import psycopg2.extras
 import psycopg2.extensions
 import logging
+import os
 
 from .scrapers import ALL_SCRAPERS, ScraperBase
+from .scrapers.types import Article
 
 
 class Scraper:
@@ -26,6 +28,11 @@ class Scraper:
             self.scrapers.append(scraper())
 
     def run(self):
+        """
+        Run the scraper.
+
+        This will continuously check sites and update the database
+        """
         articles = []
         for scraper in self.scrapers:
             articles.extend(scraper.scrape_articles())
@@ -39,3 +46,14 @@ class Scraper:
             print("  date   =", article.date)
             print("  site   = {} ({})".format(article.site_name, article.site_url))
             print()
+
+        if os.environ.get("MYSTIC_WRITE_TO_DB") is not None:
+            self.insert_articles(articles)
+
+    def insert_articles(self, articles: List[Article]):
+        psycopg2.extras.execute_batch(
+            self.db_cur,
+            """insert into articles values (%s, %s, %s, %s, %s, %s, %s, %s)""",
+            [i.as_tuple() for i in articles],
+        )
+        self.db_conn.commit()

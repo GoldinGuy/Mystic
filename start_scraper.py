@@ -4,7 +4,7 @@ import scraper
 
 
 if __name__ == "__main__":
-    DATABASE_URL = os.environ['DATABASE_URL']
+    DATABASE_URL = os.environ["DATABASE_URL"]
 
     if os.environ.get("MYSTIC_DEBUG_LOGGING") is not None:
         logging.basicConfig(level=logging.DEBUG)

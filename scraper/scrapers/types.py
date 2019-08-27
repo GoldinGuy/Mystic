@@ -7,12 +7,26 @@ from datetime import datetime
 class Article:
     title: str
     url: str
-    date: datetime
+    date: Optional[datetime]
     image_url: Optional[str]
     site_name: str
     site_url: str
     author_name: str
     author_url: Optional[str]
+
+    def as_tuple(
+        self
+    ) -> (str, str, Optional[str], Optional[str], str, str, str, Optional[str]):
+        return (
+            self.title,
+            self.url,
+            None if self.date is None else self.date.isoformat(),
+            self.image_url,
+            self.site_name,
+            self.site_url,
+            self.author_name,
+            self.author_url,
+        )
 
 
 class ScraperBase:

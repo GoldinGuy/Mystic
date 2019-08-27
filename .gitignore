@@ -3,3 +3,6 @@
 .env
 
 Pipfile.lock
+.mypy_cache/
+*.pyc
+*.pyo

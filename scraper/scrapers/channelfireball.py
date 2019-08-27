@@ -1,6 +1,7 @@
 from typing import List
 from datetime import datetime
 import requests
+import html
 
 from .types import ScraperBase, Article
 
@@ -23,7 +24,7 @@ class ChannelFireballScraper(ScraperBase):
 
         for entry in content:
             article = Article(
-                entry["title"],
+                html.unescape(entry["title"]),
                 entry["link"],
                 datetime.fromisoformat(entry["date"]),
                 entry["featured_image"]["thumb"],

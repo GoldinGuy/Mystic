@@ -1,5 +1,5 @@
 from typing import List
-import json
+from datetime import datetime
 import requests
 
 from .types import ScraperBase, Article
@@ -14,7 +14,7 @@ ARTICLES_TEMPLATE = (
 
 class ChannelFireballScraper(ScraperBase):
     def scrape_articles(self) -> List[Article]:
-        # server rejects the default requests UA
+        # server rejects the default `requests` UA
         content = requests.get(
             ARTICLES_TEMPLATE.format(1), headers={"User-Agent": "Chrome/76.0.3809.110"}
         ).json()
@@ -26,6 +26,7 @@ class ChannelFireballScraper(ScraperBase):
             article = Article(
                 entry["title"],
                 entry["link"],
+                datetime.fromisoformat(entry["date"]),
                 entry["featured_image"]["thumb"],
                 SITE_NAME,
                 BASE_URL,

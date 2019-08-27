@@ -37,5 +37,6 @@ class Scraper:
             print("  url    =", article.url)
             print("  image  =", article.image_url)
             print("  author = {} ({})".format(article.author_name, article.author_url))
+            print("  date   =", article.date)
             print("  site   = {} ({})".format(article.site_name, article.site_url))
             print()

@@ -1,11 +1,13 @@
 from typing import Optional, List
 from dataclasses import dataclass
+from datetime import datetime
 
 
 @dataclass
 class Article:
     title: str
     url: str
+    date: datetime
     image_url: Optional[str]
     site_name: str
     site_url: str

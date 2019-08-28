@@ -10,14 +10,16 @@ print("Creating articles table...")
 cur.execute(
     """
 create table if not exists articles (
-    title        text not null,
-    url          text not null,
-    date         text,
-    image_url    text,
-    site_name    text not null,
-    site_url     text not null,
-    author_name  text not null,
-    author_url   text
+    title       text not null,
+    url         text not null
+        constraint articles_pk
+            primary key,
+    date        text,
+    image_url   text,
+    site_name   text not null,
+    site_url    text not null,
+    author_name text not null,
+    author_url  text
 );"""
 )
 

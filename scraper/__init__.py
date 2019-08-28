@@ -53,7 +53,7 @@ class Scraper:
     def insert_articles(self, articles: List[Article]):
         psycopg2.extras.execute_batch(
             self.db_cur,
-            """insert into articles values (%s, %s, %s, %s, %s, %s, %s, %s)""",
+            """insert into articles values (%s, %s, %s, %s, %s, %s, %s, %s) on conflict do nothing""",
             [i.as_tuple() for i in articles],
         )
         self.db_conn.commit()

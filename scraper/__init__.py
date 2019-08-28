@@ -37,7 +37,7 @@ class Scraper:
         for scraper in self.scrapers:
             articles.extend(scraper.scrape_articles())
 
-        print("Collected {} articles:".format(articles))
+        print("Collected {} articles:".format(len(articles)))
         for article in articles:
             print("#", article.title)
             print("  url    =", article.url)

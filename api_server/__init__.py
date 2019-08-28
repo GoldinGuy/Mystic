@@ -1,3 +1,4 @@
+from flask_cors import CORS
 from flask import Flask
 import json
 import psycopg2
@@ -10,6 +11,7 @@ conn = psycopg2.connect(DATABASE_URL)  # , sslmode="require")
 cur = conn.cursor()
 
 app = Flask(__name__)
+cors = CORS(app)
 
 
 @app.route("/articles")

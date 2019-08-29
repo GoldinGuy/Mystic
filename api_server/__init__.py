@@ -19,9 +19,26 @@ def articles():
     return json.dumps(retrieve_articles())
 
 
-def retrieve_articles(count=10):
-    cur.execute("SELECT * FROM articles ORDER BY date DESC LIMIT 50;")
+@app.route("/articles/by/<site>")
+def articles_by_site(site):
+    return json.dumps(retrieve_articles_from(site))
 
+
+def retrieve_articles_from(site, count=50):
+    cur.execute(
+        "SELECT * FROM articles WHERE LOWER(site_name) = %s ORDER BY date DESC LIMIT %s;",
+        (site.lower(), count),
+    )
+
+    return fetch_requested_articles()
+
+
+def retrieve_articles(count=50):
+    cur.execute("SELECT * FROM articles ORDER BY date DESC LIMIT %s;", (count,))
+    return fetch_requested_articles()
+
+
+def fetch_requested_articles():
     output = []
     for article in cur.fetchall():
         output.append(

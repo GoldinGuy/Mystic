@@ -1,4 +1,5 @@
-from typing import List
+from typing import List, Dict
+from datetime import datetime
 import psycopg2
 import psycopg2.extras
 import psycopg2.extensions
@@ -33,6 +34,7 @@ class Scraper:
 
         This will continuously check sites and update the database
         """
+
         articles = []
         for scraper in self.scrapers:
             articles.extend(scraper.scrape_articles())
@@ -53,7 +55,14 @@ class Scraper:
     def insert_articles(self, articles: List[Article]):
         psycopg2.extras.execute_batch(
             self.db_cur,
-            """insert into articles values (%s, %s, %s, %s, %s, %s, %s, %s) on conflict do nothing""",
+            "insert into articles values (%s, %s, %s, %s, %s, %s, %s, %s) on conflict do nothing",
             [i.as_tuple() for i in articles],
         )
         self.db_conn.commit()
+
+    def last_date_for_sites(self) -> Dict[str, datetime]:
+        self.db_cur.execute(
+            "SELECT DISTINCT ON (site_name) site_name, date FROM articles ORDER BY site_name, date DESC"
+        )
+        results = self.db_cur.fetchall()
+        return dict(map(lambda x: (x[0], datetime.fromisoformat(x[1])), results))

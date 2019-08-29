@@ -12,6 +12,7 @@ lxml = "==4.4.1"
 flask = "*"
 gunicorn = "*"
 flask-cors = "*"
+dateparser = "*"
 
 [requires]
 python_version = "3.7"

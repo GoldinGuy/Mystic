@@ -38,7 +38,6 @@ class StarCityGamesScraper(ScraperBase):
             article = Article(
                 title, url, date, img_url, SITE_NAME, BASE_URL, author_name, author_url
             )
-            print(article)
             articles.append(article)
 
         return articles

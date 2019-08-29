@@ -19,19 +19,16 @@ class EDHRECScraper(ScraperBase):
         articles = []
 
         for post in posts:
-            # print(lxml.html.tostring(post).decode())
-
             title_node = post.xpath("h3/a")[0]
             title = title_node.text
             url = title_node.attrib["href"]
 
             meta_node = post.xpath('p[@class="blog-post-meta"]')[0]
             date = meta_node.text[:-9]
-            # TODO: Fix null dates
+            # Sometimes there's no date
             if date.strip() == "":
-                date = datetime(1900, 1, 1, 0, 0)
-            else:
-                date = datetime.strptime(date, "%B %d, %Y")
+                date = self.extract_date_from_article(url)
+            date = datetime.strptime(date, "%B %d, %Y")
 
             author_node = meta_node.xpath("a")[0]
             author_name = author_node.text.strip()
@@ -47,3 +44,9 @@ class EDHRECScraper(ScraperBase):
             articles.append(article)
 
         return articles
+
+    def extract_date_from_article(self, article_url: str) -> str:
+        content = lxml.html.fromstring(requests.get(article_url).text)
+
+        meta_node = content.xpath('//p[@class="blog-post-meta"]')[0]
+        return meta_node.text[:-9]

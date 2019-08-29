@@ -20,7 +20,7 @@ def articles():
 
 
 def retrieve_articles(count=10):
-    cur.execute("SELECT * FROM articles;")
+    cur.execute("SELECT * FROM articles ORDER BY date DESC LIMIT 50;")
 
     output = []
     for article in cur.fetchall():

@@ -1,5 +1,6 @@
 from flask_cors import CORS
 from flask import Flask
+from flask import request
 import json
 import psycopg2
 import os
@@ -16,25 +17,30 @@ cors = CORS(app)
 
 @app.route("/articles")
 def articles():
-    return json.dumps(retrieve_articles())
+    page = int(request.args.get("page", 0))
+    return json.dumps(retrieve_articles(page=page))
 
 
 @app.route("/articles/by/<site>")
 def articles_by_site(site):
-    return json.dumps(retrieve_articles_from(site))
+    page = int(request.args.get("page", 0))
+    return json.dumps(retrieve_articles_from(site, page=page))
 
 
-def retrieve_articles_from(site, count=50):
+def retrieve_articles_from(site, count=50, page=0):
     cur.execute(
-        "SELECT * FROM articles WHERE LOWER(site_name) = %s ORDER BY date DESC LIMIT %s;",
-        (site.lower(), count),
+        "SELECT * FROM articles WHERE LOWER(site_name) = %s ORDER BY date DESC, id DESC LIMIT %s OFFSET %s;",
+        (site.lower(), count, page * count),
     )
 
     return fetch_requested_articles()
 
 
-def retrieve_articles(count=50):
-    cur.execute("SELECT * FROM articles ORDER BY date DESC LIMIT %s;", (count,))
+def retrieve_articles(count=50, page=0):
+    cur.execute(
+        "SELECT * FROM articles ORDER BY date DESC, id DESC LIMIT %s OFFSET %s;",
+        (count, page * count),
+    )
     return fetch_requested_articles()
 
 

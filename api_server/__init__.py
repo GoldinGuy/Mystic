@@ -29,7 +29,8 @@ def articles_by_site(site):
 
 def retrieve_articles_from(site, count=50, page=0):
     cur.execute(
-        "SELECT * FROM articles WHERE LOWER(site_name) = %s ORDER BY date DESC, id DESC LIMIT %s OFFSET %s;",
+        "SELECT title, url, date, image_url, site_name, site_url, author_name, author_url "
+        "FROM articles WHERE LOWER(site_name) = %s ORDER BY date DESC, id DESC LIMIT %s OFFSET %s;",
         (site.lower(), count, page * count),
     )
 
@@ -38,7 +39,8 @@ def retrieve_articles_from(site, count=50, page=0):
 
 def retrieve_articles(count=50, page=0):
     cur.execute(
-        "SELECT * FROM articles ORDER BY date DESC, id DESC LIMIT %s OFFSET %s;",
+        "SELECT title, url, date, image_url, site_name, site_url, author_name, author_url "
+        "FROM articles ORDER BY date DESC, id DESC LIMIT %s OFFSET %s;",
         (count, page * count),
     )
     return fetch_requested_articles()

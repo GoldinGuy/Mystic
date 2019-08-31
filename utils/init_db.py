@@ -10,6 +10,7 @@ print("Creating articles table...")
 cur.execute(
     """
 create table if not exists articles (
+    id          serial not null,
     title       text not null,
     url         text not null
         constraint articles_pk

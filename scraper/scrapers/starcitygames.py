@@ -10,7 +10,11 @@ BASE_URL = "http://www.starcitygames.com"
 
 
 class StarCityGamesScraper(ScraperBase):
-    def scrape_articles(self) -> List[Article]:
+    def articles_since(self, date: datetime) -> List[Article]:
+        return self.scrape_articles()
+
+    # TODO: Make actually do paging
+    def scrape_articles(self, page=1) -> List[Article]:
         content = lxml.html.fromstring(
             requests.get("http://www.starcitygames.com/tags/Premium~Select/").text
         )

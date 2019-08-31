@@ -14,8 +14,10 @@ ARTICLES_TEMPLATE = "https://www.mtggoldfish.com/articles?page={}"
 class MTGGoldfishScraper(ScraperBase):
     background_img_regex = re.compile(r"url\('(.*?)'\)")
 
-    def scrape_articles(self) -> List[Article]:
-        content = lxml.html.fromstring(requests.get(ARTICLES_TEMPLATE.format(1)).text)
+    def scrape_articles(self, page=1) -> List[Article]:
+        content = lxml.html.fromstring(
+            requests.get(ARTICLES_TEMPLATE.format(page)).text
+        )
 
         cards = content.xpath('//div[@class="article-tile"]')
 

@@ -9,15 +9,16 @@ SITE_NAME = "ChannelFireball"
 BASE_URL = "https://store.channelfireball.com/landing"
 ARTICLES_TEMPLATE = (
     "https://chfireball.wpengine.com/wp-json/wp/v2/multiple-post-type?"
-    "&type[]=post&type[]=video&per_page=15"
+    "&type[]=post&per_page=15&page={}"
 )
 
 
 class ChannelFireballScraper(ScraperBase):
-    def scrape_articles(self) -> List[Article]:
+    def scrape_articles(self, page=1) -> List[Article]:
         # server rejects the default `requests` UA
         content = requests.get(
-            ARTICLES_TEMPLATE.format(1), headers={"User-Agent": "Chrome/76.0.3809.110"}
+            ARTICLES_TEMPLATE.format(page),
+            headers={"User-Agent": "Chrome/76.0.3809.110"},
         ).json()
 
         articles = []

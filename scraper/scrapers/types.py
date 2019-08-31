@@ -30,5 +30,17 @@ class Article:
 
 
 class ScraperBase:
-    def scrape_articles(self) -> List[Article]:
+    def scrape_articles(self, page=1) -> List[Article]:
         pass
+
+    def articles_since(self, date: datetime) -> List[Article]:
+        articles = []
+
+        page = 1
+
+        articles.extend(self.scrape_articles(page))
+        while articles[-1].date > date:
+            page += 1
+            articles.extend(self.scrape_articles(page))
+
+        return articles

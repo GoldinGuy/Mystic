@@ -11,8 +11,10 @@ ARTICLES_TEMPLATE = "https://articles.edhrec.com/page/{}"
 
 
 class EDHRECScraper(ScraperBase):
-    def scrape_articles(self) -> List[Article]:
-        content = lxml.html.fromstring(requests.get(ARTICLES_TEMPLATE.format(1)).text)
+    def scrape_articles(self, page=1) -> List[Article]:
+        content = lxml.html.fromstring(
+            requests.get(ARTICLES_TEMPLATE.format(page)).text
+        )
 
         posts = content.xpath('//div[@class="blog-post"]')
 

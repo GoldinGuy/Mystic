@@ -17,12 +17,14 @@ ARTICLES_TEMPLATE = (
 class WizardsScraper(ScraperBase):
     background_img_regex = re.compile(r"url\((.*?)\)")
 
-    def scrape_articles(self) -> List[Article]:
+    def scrape_articles(self, page=1) -> List[Article]:
         today = datetime.today()
         last_year = datetime(today.year - 1, today.month, today.day)
         content = requests.get(
             ARTICLES_TEMPLATE.format(
-                last_year.strftime("%m/%d/%Y"), today.strftime("%m/%d/%Y"), 1
+                last_year.strftime("%m/%d/%Y"),
+                today.strftime("%m/%d/%Y"),
+                (page - 1) * 10,
             )
         ).json()
         articles = []

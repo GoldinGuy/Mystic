@@ -14,10 +14,9 @@ BACKGROUND_IMG_REGEX = re.compile(r"url\('(.*?)'\)")
 
 
 class HipstersScraper(ScraperBase):
-    def scrape_articles(self) -> List[Article]:
-        today = datetime.today()
+    def scrape_articles(self, page=1) -> List[Article]:
         content = requests.post(
-            ARTICLES_TEMPLATE, data={"page": "0", "order": "DESC"}
+            ARTICLES_TEMPLATE, data={"page": page - 1, "order": "DESC"}
         ).json()
 
         articles = []

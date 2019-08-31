@@ -56,9 +56,9 @@ class StarCityGamesScraper(ScraperBase):
 
     @staticmethod
     def parse_date(date_str: str) -> datetime:
+        today = datetime.today()
         if date_str == "TODAY":
-            return datetime.today()
+            return datetime(today.year, today.month, today.day)
         else:
-            today = datetime.today()
             parsed = datetime.strptime(date_str, "%m/%d")
             return datetime(today.year, parsed.month, parsed.day)

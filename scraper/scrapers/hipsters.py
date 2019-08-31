@@ -45,6 +45,8 @@ class HipstersScraper(ScraperBase):
         articles = []
         for thread in threads:
             thread.join()
+            if thread.result is None:
+                continue
             date, img_url, author_name, author_url = thread.result
 
             article = Article(

@@ -50,7 +50,7 @@ class HipstersScraper(ScraperBase):
             date, img_url, author_name, author_url = thread.result
 
             # dateparser.parse can't be run in a thread
-            date = dateparser.parse(date)
+            date = dateparser.parse(date).replace(microsecond=0, second=0)
 
             article = Article(
                 thread.title,

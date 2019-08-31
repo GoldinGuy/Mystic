@@ -57,6 +57,5 @@ class MTGGoldfishScraper(ScraperBase):
 
 
 def parse_short_date(date: str) -> datetime:
-    date = datetime.strptime(date, "%b %d")
     today = datetime.today()
-    return datetime(today.year, date.month, date.day)
+    return datetime.strptime(date, "%b %d").replace(year=today.year)

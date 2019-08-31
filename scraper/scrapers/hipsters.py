@@ -1,5 +1,5 @@
 from typing import List
-from datetime import datetime
+from threading import Thread
 import lxml.html
 import requests
 import dateparser
@@ -20,10 +20,9 @@ class HipstersScraper(ScraperBase):
             ARTICLES_TEMPLATE, data={"page": page - 1, "order": "DESC"}
         ).json()
 
-        articles = []
-
         content = lxml.html.fromstring(content["html"])
 
+        threads = []
         posts = content.xpath('//div[@class="post_container"]')
         for post in posts:
 
@@ -39,11 +38,18 @@ class HipstersScraper(ScraperBase):
             if category == "ADVERTISEMENT":
                 continue
 
-            date, img_url, author_name, author_url = self.fetch_article_info(url)
+            t = HipsterArticleFetcher(url, title)
+            t.start()
+            threads.append(t)
+
+        articles = []
+        for thread in threads:
+            thread.join()
+            date, img_url, author_name, author_url = thread.result
 
             article = Article(
-                title,
-                url,
+                thread.title,
+                thread.url,
                 date,
                 img_url,
                 self.SITE_NAME,
@@ -51,12 +57,20 @@ class HipstersScraper(ScraperBase):
                 author_name,
                 author_url,
             )
-
             articles.append(article)
 
         return articles
 
-    def fetch_article_info(self, url: str) -> (str, str, str, str):
+
+class HipsterArticleFetcher(Thread):
+    def __init__(self, url: str, title: str):
+        self.url = url
+        self.title = title
+        self.result = None
+        super(HipsterArticleFetcher, self).__init__()
+
+    @staticmethod
+    def fetch_article_info(url: str) -> (str, str, str, str):
         content = lxml.html.fromstring(requests.get(url).text)
 
         date = content.xpath('//div[@class="post-date"]/p')[0].text.strip()
@@ -73,3 +87,6 @@ class HipstersScraper(ScraperBase):
         img_url = BACKGROUND_IMG_REGEX.search(img_node.attrib["style"]).group(1)
 
         return (date, img_url, author_name, author_url)
+
+    def run(self):
+        self.result = self.fetch_article_info(self.url)

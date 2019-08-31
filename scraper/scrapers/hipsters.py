@@ -49,6 +49,9 @@ class HipstersScraper(ScraperBase):
                 continue
             date, img_url, author_name, author_url = thread.result
 
+            # dateparser.parse can't be run in a thread
+            date = dateparser.parse(date)
+
             article = Article(
                 thread.title,
                 thread.url,
@@ -76,7 +79,6 @@ class HipsterArticleFetcher(Thread):
         content = lxml.html.fromstring(requests.get(url).text)
 
         date = content.xpath('//div[@class="post-date"]/p')[0].text.strip()
-        date = dateparser.parse(date)
 
         author_node = content.xpath(
             '//div[@class="post-author-container"]/div/div/p/a'

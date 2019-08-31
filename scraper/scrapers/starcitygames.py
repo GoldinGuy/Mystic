@@ -5,12 +5,13 @@ import requests
 
 from .types import ScraperBase, Article
 
-SITE_NAME = "StarCityGames"
 BASE_URL = "http://www.starcitygames.com"
 
 
 class StarCityGamesScraper(ScraperBase):
-    def articles_since(self, date: datetime) -> List[Article]:
+    SITE_NAME = "StarCityGames"
+
+    def scrape_articles_since(self, date: datetime) -> List[Article]:
         return self.scrape_articles()
 
     # TODO: Make actually do paging
@@ -40,7 +41,14 @@ class StarCityGamesScraper(ScraperBase):
             date = self.parse_date(date_raw)
             img_url = None
             article = Article(
-                title, url, date, img_url, SITE_NAME, BASE_URL, author_name, author_url
+                title,
+                url,
+                date,
+                img_url,
+                self.SITE_NAME,
+                BASE_URL,
+                author_name,
+                author_url,
             )
             articles.append(article)
 

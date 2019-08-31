@@ -7,13 +7,14 @@ import re
 
 from .types import ScraperBase, Article
 
-SITE_NAME = "Hipsters of the Coast"
 BASE_URL = "https://www.hipstersofthecoast.com/"
 ARTICLES_TEMPLATE = "https://www.hipstersofthecoast.com/?infinity=scrolling"
 BACKGROUND_IMG_REGEX = re.compile(r"url\('(.*?)'\)")
 
 
 class HipstersScraper(ScraperBase):
+    SITE_NAME = "Hipsters of the Coast"
+
     def scrape_articles(self, page=1) -> List[Article]:
         content = requests.post(
             ARTICLES_TEMPLATE, data={"page": page - 1, "order": "DESC"}
@@ -41,7 +42,14 @@ class HipstersScraper(ScraperBase):
             date, img_url, author_name, author_url = self.fetch_article_info(url)
 
             article = Article(
-                title, url, date, img_url, SITE_NAME, BASE_URL, author_name, author_url
+                title,
+                url,
+                date,
+                img_url,
+                self.SITE_NAME,
+                BASE_URL,
+                author_name,
+                author_url,
             )
 
             articles.append(article)

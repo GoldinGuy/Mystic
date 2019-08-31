@@ -5,12 +5,13 @@ import requests
 
 from .types import ScraperBase, Article
 
-SITE_NAME = "EDHREC"
 BASE_URL = "https://articles.edhrec.com"
 ARTICLES_TEMPLATE = "https://articles.edhrec.com/page/{}"
 
 
 class EDHRECScraper(ScraperBase):
+    SITE_NAME = "EDHREC"
+
     def scrape_articles(self, page=1) -> List[Article]:
         content = lxml.html.fromstring(
             requests.get(ARTICLES_TEMPLATE.format(page)).text
@@ -40,7 +41,14 @@ class EDHRECScraper(ScraperBase):
             img_url = img_node.attrib["src"]
 
             article = Article(
-                title, url, date, img_url, SITE_NAME, BASE_URL, author_name, author_url
+                title,
+                url,
+                date,
+                img_url,
+                self.SITE_NAME,
+                BASE_URL,
+                author_name,
+                author_url,
             )
 
             articles.append(article)

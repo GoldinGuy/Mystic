@@ -30,10 +30,12 @@ class Article:
 
 
 class ScraperBase:
+    SITE_NAME: str
+
     def scrape_articles(self, page=1) -> List[Article]:
         pass
 
-    def articles_since(self, date: datetime) -> List[Article]:
+    def scrape_articles_since(self, date: datetime) -> List[Article]:
         articles = []
 
         page = 1

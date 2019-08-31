@@ -6,12 +6,12 @@ from datetime import datetime
 
 from .types import ScraperBase, Article
 
-SITE_NAME = "MTGGoldfish"
 BASE_URL = "https://www.mtggoldfish.com"
 ARTICLES_TEMPLATE = "https://www.mtggoldfish.com/articles?page={}"
 
 
 class MTGGoldfishScraper(ScraperBase):
+    SITE_NAME = "MTGGoldfish"
     background_img_regex = re.compile(r"url\('(.*?)'\)")
 
     def scrape_articles(self, page=1) -> List[Article]:
@@ -41,7 +41,14 @@ class MTGGoldfishScraper(ScraperBase):
             author_url = BASE_URL + author_node.attrib["href"]
 
             article = Article(
-                title, url, date, img_url, SITE_NAME, BASE_URL, author_name, author_url
+                title,
+                url,
+                date,
+                img_url,
+                self.SITE_NAME,
+                BASE_URL,
+                author_name,
+                author_url,
             )
 
             articles.append(article)

@@ -6,7 +6,6 @@ import re
 
 from .types import ScraperBase, Article
 
-SITE_NAME = "Wizards"
 BASE_URL = "https://magic.wizards.com"
 ARTICLES_TEMPLATE = (
     "https://magic.wizards.com/en/search-magic-ajax?fromDate={}&toDate={}"
@@ -15,6 +14,7 @@ ARTICLES_TEMPLATE = (
 
 
 class WizardsScraper(ScraperBase):
+    SITE_NAME = "Wizards"
     background_img_regex = re.compile(r"url\((.*?)\)")
 
     def scrape_articles(self, page=1) -> List[Article]:
@@ -50,7 +50,7 @@ class WizardsScraper(ScraperBase):
             )
 
             article = Article(
-                title, url, date, img_url, SITE_NAME, BASE_URL, author_name, None
+                title, url, date, img_url, self.SITE_NAME, BASE_URL, author_name, None
             )
 
             articles.append(article)

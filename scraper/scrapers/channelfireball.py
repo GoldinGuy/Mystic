@@ -5,7 +5,6 @@ import html
 
 from .types import ScraperBase, Article
 
-SITE_NAME = "ChannelFireball"
 BASE_URL = "https://store.channelfireball.com/landing"
 ARTICLES_TEMPLATE = (
     "https://chfireball.wpengine.com/wp-json/wp/v2/multiple-post-type?"
@@ -14,6 +13,8 @@ ARTICLES_TEMPLATE = (
 
 
 class ChannelFireballScraper(ScraperBase):
+    SITE_NAME = "ChannelFireball"
+
     def scrape_articles(self, page=1) -> List[Article]:
         # server rejects the default `requests` UA
         content = requests.get(
@@ -29,7 +30,7 @@ class ChannelFireballScraper(ScraperBase):
                 entry["link"],
                 datetime.fromisoformat(entry["date"]),
                 entry["featured_image"]["thumb"],
-                SITE_NAME,
+                self.SITE_NAME,
                 BASE_URL,
                 entry["author"],
                 None,

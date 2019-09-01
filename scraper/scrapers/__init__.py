@@ -8,6 +8,7 @@ from .wizardsmagic import WizardsScraper
 from .starcitygames import StarCityGamesScraper
 from .hipsters import HipstersScraper
 from .coolstuff import CoolStuffScraper
+from .wizardsmagicpodcasts import WizardsPodcastsScraper
 
 
 ALL_SCRAPERS: List[Type[ScraperBase]] = [
@@ -18,4 +19,5 @@ ALL_SCRAPERS: List[Type[ScraperBase]] = [
     StarCityGamesScraper,
     HipstersScraper,
     CoolStuffScraper,
+    WizardsPodcastsScraper,
 ]

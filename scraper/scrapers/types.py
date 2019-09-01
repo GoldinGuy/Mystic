@@ -2,6 +2,17 @@ from typing import Optional, List
 from dataclasses import dataclass
 from datetime import datetime
 
+ArticleTupleType = (
+    str,
+    str,
+    Optional[str],
+    Optional[str],
+    str,
+    str,
+    Optional[str],
+    Optional[str],
+)
+
 
 @dataclass
 class Article:
@@ -11,12 +22,10 @@ class Article:
     image_url: Optional[str]
     site_name: str
     site_url: str
-    author_name: str
+    author_name: Optional[str]
     author_url: Optional[str]
 
-    def as_tuple(
-        self
-    ) -> (str, str, Optional[str], Optional[str], str, str, str, Optional[str]):
+    def as_tuple(self) -> ArticleTupleType:
         return (
             self.title,
             self.url,

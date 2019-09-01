@@ -19,7 +19,7 @@ create table if not exists articles (
     image_url   text,
     site_name   text not null,
     site_url    text not null,
-    author_name text not null,
+    author_name text, 
     author_url  text
 );"""
 )

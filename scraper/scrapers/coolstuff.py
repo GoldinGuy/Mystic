@@ -13,9 +13,6 @@ class CoolStuffScraper(ScraperBase):
     SITE_NAME = "CoolStuffInc"
 
     def scrape_articles(self, page=1) -> List[Article]:
-        # content = lxml.html.fromstring(
-        #     requests.get(ARTICLES_TEMPLATE.format(page)).text
-        # )
         # server rejects the default `requests` UA
         content = requests.get(
             ARTICLES_TEMPLATE.format(page),

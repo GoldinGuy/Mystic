@@ -21,6 +21,15 @@ def articles():
     return json.dumps(retrieve_articles(page=page))
 
 
+@app.route("/articles/by")
+def articles_by_multiple_sites():
+    page = int(request.args.get("page", 0))
+    sites = request.args.getlist("site")
+    if len(sites) == 0:
+        return "{}"
+    return json.dumps(retrieve_articles_from_multiple(tuple(sites), page=page))
+
+
 @app.route("/articles/by/<site>")
 def articles_by_site(site):
     page = int(request.args.get("page", 0))
@@ -32,6 +41,16 @@ def retrieve_articles_from(site, count=50, page=0):
         "SELECT title, url, date, image_url, site_name, site_url, author_name, author_url "
         "FROM articles WHERE LOWER(site_name) = %s ORDER BY date DESC, id ASC LIMIT %s OFFSET %s;",
         (site.lower(), count, page * count),
+    )
+
+    return fetch_requested_articles()
+
+
+def retrieve_articles_from_multiple(sites, count=50, page=0):
+    cur.execute(
+        "SELECT title, url, date, image_url, site_name, site_url, author_name, author_url "
+        "FROM articles WHERE LOWER(site_name) in %s ORDER BY date DESC, id ASC LIMIT %s OFFSET %s;",
+        (sites, count, page * count),
     )
 
     return fetch_requested_articles()

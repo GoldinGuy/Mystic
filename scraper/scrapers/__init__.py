@@ -9,7 +9,7 @@ from .starcitygames import StarCityGamesScraper
 from .hipsters import HipstersScraper
 from .coolstuff import CoolStuffScraper
 from .wizardsmagicpodcasts import WizardsPodcastsScraper
-
+from .cardkingdom import CardKingdomScraper
 
 ALL_SCRAPERS: List[Type[ScraperBase]] = [
     MTGGoldfishScraper,
@@ -20,4 +20,5 @@ ALL_SCRAPERS: List[Type[ScraperBase]] = [
     HipstersScraper,
     CoolStuffScraper,
     WizardsPodcastsScraper,
+    CardKingdomScraper,
 ]

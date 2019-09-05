@@ -1,4 +1,4 @@
-from . import cur
+from . import cur, mc
 import requests
 import lxml.html
 
@@ -51,10 +51,18 @@ def fetch_requested_articles():
 
 
 def fetch_scryfall_latest_promo():
+    mc_url = mc.get("SCRYFALL_LATEST_PROMO")
+    if mc_url is not None:
+        return mc_url
+
     content = requests.get("https://scryfall.com/").text
     content = lxml.html.fromstring(content)
 
-    return (
+    url = (
         "https://scryfall.com"
         + content.xpath('//div[@class="homepage-examples"]/ul/li/a')[0].attrib["href"]
     )
+
+    mc.add("SCRYFALL_LATEST_PROMO", url, time=60 * 60 * 24)
+
+    return url

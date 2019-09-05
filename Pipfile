@@ -13,6 +13,8 @@ flask = "*"
 gunicorn = "*"
 flask-cors = "*"
 dateparser = "*"
+python-binary-memcached = "*"
+
 
 [requires]
 python_version = "3.7"

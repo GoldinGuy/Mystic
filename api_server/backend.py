@@ -48,3 +48,13 @@ def fetch_requested_articles():
             }
         )
     return output
+
+
+def fetch_scryfall_latest_promo():
+    content = requests.get("https://scryfall.com/").text
+    content = lxml.html.fromstring(content)
+
+    return (
+        "https://scryfall.com"
+        + content.xpath('//div[@class="homepage-examples"]/ul/li/a')[0].attrib["href"]
+    )

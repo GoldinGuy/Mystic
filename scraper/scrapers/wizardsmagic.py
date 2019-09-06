@@ -37,6 +37,9 @@ class WizardsScraper(ScraperBase):
 
             body_node = content.xpath('//div[@class="text"]/div[@class="title"]')[0]
             title = body_node.xpath("h3")[0].text
+            desc = content.xpath('//div[@class="text"]/div[@class="description"]')[
+                0
+            ].text
             author_name = body_node.xpath('p/span[@class="author"]')[0].text[3:]
 
             date_node = body_node.xpath('p/span[@class="date"]')[0]
@@ -50,7 +53,15 @@ class WizardsScraper(ScraperBase):
             )
 
             article = Article(
-                title, url, date, img_url, self.SITE_NAME, BASE_URL, author_name, None
+                title,
+                url,
+                date,
+                img_url,
+                self.SITE_NAME,
+                BASE_URL,
+                author_name,
+                None,
+                desc,
             )
 
             articles.append(article)

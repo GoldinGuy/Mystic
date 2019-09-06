@@ -5,7 +5,7 @@ import lxml.html
 
 def retrieve_articles_from(site, count=50, page=0):
     cur.execute(
-        "SELECT title, url, date, image_url, site_name, site_url, author_name, author_url "
+        "SELECT title, url, date, image_url, site_name, site_url, author_name, author_url, description "
         "FROM articles WHERE LOWER(site_name) = %s ORDER BY date DESC, id ASC LIMIT %s OFFSET %s;",
         (site.lower(), count, page * count),
     )
@@ -15,7 +15,7 @@ def retrieve_articles_from(site, count=50, page=0):
 
 def retrieve_articles_from_multiple(sites, count=50, page=0):
     cur.execute(
-        "SELECT title, url, date, image_url, site_name, site_url, author_name, author_url "
+        "SELECT title, url, date, image_url, site_name, site_url, author_name, author_url, description "
         "FROM articles WHERE LOWER(site_name) in %s ORDER BY date DESC, id ASC LIMIT %s OFFSET %s;",
         (sites, count, page * count),
     )
@@ -25,7 +25,7 @@ def retrieve_articles_from_multiple(sites, count=50, page=0):
 
 def retrieve_articles(count=50, page=0):
     cur.execute(
-        "SELECT title, url, date, image_url, site_name, site_url, author_name, author_url "
+        "SELECT title, url, date, image_url, site_name, site_url, author_name, author_url, description "
         "FROM articles ORDER BY date DESC, id ASC LIMIT %s OFFSET %s;",
         (count, page * count),
     )
@@ -45,6 +45,7 @@ def fetch_requested_articles():
                 "site_url": article[5],
                 "author_name": article[6],
                 "author_url": article[7],
+                "description": article[8],
             }
         )
     return output

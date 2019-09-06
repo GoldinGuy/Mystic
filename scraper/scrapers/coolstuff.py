@@ -33,6 +33,8 @@ class CoolStuffScraper(ScraperBase):
             author_name = author_node.text
             date = datetime.strptime(date_node.text, "%B %d, %Y")
 
+            desc = post.xpath("div/div[2]")[0].text
+
             article = Article(
                 title,
                 url,
@@ -41,7 +43,8 @@ class CoolStuffScraper(ScraperBase):
                 self.SITE_NAME,
                 BASE_URL,
                 author_name,
-                author_url=None,
+                None,
+                desc,
             )
 
             articles.append(article)

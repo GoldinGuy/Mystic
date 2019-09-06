@@ -38,8 +38,11 @@ class StarCityGamesScraper(ScraperBase):
 
             date_raw = header_node.xpath('p[@class="tag_article_date"]')[0].text
 
+            desc = post.xpath("p")[0].text
+
             date = self.parse_date(date_raw)
             img_url = None
+
             article = Article(
                 title,
                 url,
@@ -49,6 +52,7 @@ class StarCityGamesScraper(ScraperBase):
                 BASE_URL,
                 author_name,
                 author_url,
+                desc,
             )
             articles.append(article)
 

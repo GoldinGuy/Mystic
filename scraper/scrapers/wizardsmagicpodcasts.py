@@ -29,8 +29,11 @@ class WizardsPodcastsScraper(ScraperBase):
             date_str = "".join(map(lambda x: x.text, date_node.getchildren()))
             date = datetime.strptime(date_str, " %b %d %Y ")
 
+            desc_node = entry.xpath("div/div[2]/div/div/p")[0]
+            desc = desc_node.text_content()
+
             article = Article(
-                title, url, date, None, self.SITE_NAME, BASE_URL, None, None
+                title, url, date, None, self.SITE_NAME, BASE_URL, None, None, desc
             )
 
             articles.append(article)

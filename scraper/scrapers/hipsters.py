@@ -30,6 +30,8 @@ class HipstersScraper(ScraperBase):
 
             title_node = body_node.xpath('div[@class="post-title"]/h3/a')[0]
             title = title_node.text.strip()
+
+            desc = body_node.xpath('div[@class="home_excerpt"]/p')[0].text
             url = title_node.attrib["href"]
 
             category = body_node.xpath('div[@class="post-category"]/h4/a')[
@@ -38,7 +40,7 @@ class HipstersScraper(ScraperBase):
             if category == "ADVERTISEMENT":
                 continue
 
-            t = HipsterArticleFetcher(url, title)
+            t = HipsterArticleFetcher(url, title, desc)
             t.start()
             threads.append(t)
 
@@ -61,6 +63,7 @@ class HipstersScraper(ScraperBase):
                 BASE_URL,
                 author_name,
                 author_url,
+                thread.desc,
             )
             articles.append(article)
 
@@ -68,9 +71,10 @@ class HipstersScraper(ScraperBase):
 
 
 class HipsterArticleFetcher(Thread):
-    def __init__(self, url: str, title: str):
+    def __init__(self, url: str, title: str, desc: str):
         self.url = url
         self.title = title
+        self.desc = desc
         self.result = None
         super(HipsterArticleFetcher, self).__init__()
 

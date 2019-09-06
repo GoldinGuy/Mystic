@@ -40,6 +40,8 @@ class MTGGoldfishScraper(ScraperBase):
             author_name = author_node.text
             author_url = BASE_URL + author_node.attrib["href"]
 
+            desc = card.xpath("p")[0].text
+
             article = Article(
                 title,
                 url,
@@ -49,6 +51,7 @@ class MTGGoldfishScraper(ScraperBase):
                 BASE_URL,
                 author_name,
                 author_url,
+                desc,
             )
 
             articles.append(article)

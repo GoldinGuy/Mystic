@@ -42,7 +42,15 @@ class HareruyaScraper(ScraperBase):
             date = datetime.strptime(date_str, "%Y/%m/%d")
 
             article = Article(
-                title, url, date, img_url, self.SITE_NAME, BASE_URL, author_name, None
+                title,
+                url,
+                date,
+                img_url,
+                self.SITE_NAME,
+                BASE_URL,
+                author_name,
+                None,
+                None,
             )
             articles.append(article)
 

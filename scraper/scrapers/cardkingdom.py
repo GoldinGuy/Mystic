@@ -27,11 +27,13 @@ class CardKingdomScraper(ScraperBase):
         articles = []
 
         for post in posts:
-            # print(lxml.html.tostring(post).decode())
-            # break
             title_node = post.xpath("div/header/h2/a")[0]
             title = title_node.text
             url = title_node.attrib["href"]
+
+            desc = post.xpath('div/div[@class="entry-content excerpt"]/p')[
+                0
+            ].text_content()
 
             date_str = post.xpath("div/header/p/span[2]/time/text()")[0][1:]
             date = datetime.strptime(date_str, "%B %d, %Y")
@@ -48,7 +50,8 @@ class CardKingdomScraper(ScraperBase):
                 self.SITE_NAME,
                 BASE_URL,
                 author_name,
-                author_url=None,
+                None,
+                desc,
             )
 
             articles.append(article)

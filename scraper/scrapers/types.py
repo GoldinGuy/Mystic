@@ -11,6 +11,7 @@ ArticleTupleType = (
     str,
     Optional[str],
     Optional[str],
+    Optional[str],
 )
 
 
@@ -24,6 +25,7 @@ class Article:
     site_url: str
     author_name: Optional[str]
     author_url: Optional[str]
+    description: Optional[str]
 
     def as_tuple(self) -> ArticleTupleType:
         return (
@@ -35,6 +37,7 @@ class Article:
             self.site_url,
             self.author_name,
             self.author_url,
+            self.description,
         )
 
 

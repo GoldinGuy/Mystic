@@ -34,6 +34,7 @@ class ChannelFireballScraper(ScraperBase):
                 BASE_URL,
                 entry["author"],
                 None,
+                entry["excerpt"],
             )
 
             articles.append(article)

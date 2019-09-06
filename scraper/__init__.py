@@ -77,6 +77,8 @@ class Scraper:
             print("  url    =", article.url)
             print("  image  =", article.image_url)
             print("  author = {} ({})".format(article.author_name, article.author_url))
+            if article.description is not None:
+                print("  desc   =", article.description.splitlines()[0])
             print("  date   =", article.date)
             print("  site   = {} ({})".format(article.site_name, article.site_url))
             print()
@@ -88,8 +90,8 @@ class Scraper:
         psycopg2.extras.execute_batch(
             self.db_cur,
             "insert into articles"
-            "(title, url, date, image_url, site_name, site_url, author_name, author_url) values"
-            "(%s, %s, %s, %s, %s, %s, %s, %s) on conflict do nothing",
+            "(title, url, date, image_url, site_name, site_url, author_name, author_url, description) values"
+            "(%s, %s, %s, %s, %s, %s, %s, %s, %s) on conflict do nothing",
             [i.as_tuple() for i in articles],
         )
         self.db_conn.commit()

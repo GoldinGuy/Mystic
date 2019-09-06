@@ -40,6 +40,8 @@ class EDHRECScraper(ScraperBase):
             img_node = post.xpath('div[@class="preview"]/div/img')[0]
             img_url = img_node.attrib["src"]
 
+            desc = post.xpath('div[@class="preview"]/div[2]/div/p')[0].text
+
             article = Article(
                 title,
                 url,
@@ -49,6 +51,7 @@ class EDHRECScraper(ScraperBase):
                 BASE_URL,
                 author_name,
                 author_url,
+                desc,
             )
 
             articles.append(article)

@@ -11,7 +11,6 @@ from .coolstuff import CoolStuffScraper
 from .wizardsmagicpodcasts import WizardsPodcastsScraper
 from .cardkingdom import CardKingdomScraper
 from .hareruya import HareruyaScraper
-from .tcgplayer import TCGPlayerScraper
 
 ALL_SCRAPERS: List[Type[ScraperBase]] = [
     MTGGoldfishScraper,
@@ -24,5 +23,4 @@ ALL_SCRAPERS: List[Type[ScraperBase]] = [
     WizardsPodcastsScraper,
     CardKingdomScraper,
     HareruyaScraper,
-    TCGPlayerScraper,
 ]

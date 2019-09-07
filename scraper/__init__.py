@@ -53,7 +53,14 @@ class Scraper:
                 if last_date is None:
                     last_date = dateparser.parse("1 week ago")
 
-                articles.extend(scraper.scrape_articles_since(last_date))
+                try:
+                    articles.extend(scraper.scrape_articles_since(last_date))
+                except Exception as e:
+                    self.logger.exception(
+                        'Scraper for site "{}" raised an exception:'.format(
+                            scraper.SITE_NAME
+                        )
+                    )
 
             self.insert_articles(articles)
 
@@ -69,7 +76,14 @@ class Scraper:
 
         articles = []
         for scraper in self.scrapers:
-            articles.extend(scraper.scrape_articles())
+            try:
+                articles.extend(scraper.scrape_articles())
+            except Exception as e:
+                self.logger.exception(
+                    'Scraper for site "{}" raised an exception:'.format(
+                        scraper.SITE_NAME
+                    )
+                )
 
         print("Collected {} articles:".format(len(articles)))
         for article in articles:

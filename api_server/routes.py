@@ -28,4 +28,4 @@ def articles_by_site(site):
 
 @app.route("/scryfall-promo-set")
 def scryfall_promo_set():
-    return json.dumps({"url": backend.fetch_scryfall_latest_promo()})
+    return json.dumps(backend.fetch_scryfall_latest_promo())

@@ -53,23 +53,31 @@ def fetch_requested_articles():
 
 def fetch_scryfall_latest_promo():
     mc_url = mc.get("SCRYFALL_LATEST_PROMO")
-    if mc_url is not None:
-        return mc_url
+    mc_ongoing = mc.get("SCRYFALL_LATEST_PROMO_ONGOING")
+    if mc_url is not None and mc_ongoing is not None:
+        return {"url": mc_url, "ongoing": mc_ongoing}
 
     content = requests.get("https://scryfall.com/").text
     content = lxml.html.fromstring(content)
 
     nodes = content.xpath('//div[@class="homepage-examples"]/ul/li/a')
     target_node = None
+    ongoing = None
 
     for node in nodes:
         text = str(node.text_content())
-        if text.endswith("ongoing previews") or text.endswith("full preview"):
+        if text.endswith("ongoing previews"):
             target_node = node
+            ongoing = True
+            break
+        if text.endswith("full preview"):
+            target_node = node
+            ongoing = False
             break
 
     url = "https://scryfall.com" + target_node.attrib["href"]
 
     mc.add("SCRYFALL_LATEST_PROMO", url, time=60 * 60 * 24)
+    mc.add("SCRYFALL_LATEST_PROMO_ONGOING", ongoing, time=60 * 60 * 24)
 
-    return url
+    return {"url": url, "ongoing": ongoing}

@@ -59,10 +59,16 @@ def fetch_scryfall_latest_promo():
     content = requests.get("https://scryfall.com/").text
     content = lxml.html.fromstring(content)
 
-    url = (
-        "https://scryfall.com"
-        + content.xpath('//div[@class="homepage-examples"]/ul/li/a')[0].attrib["href"]
-    )
+    nodes = content.xpath('//div[@class="homepage-examples"]/ul/li/a')
+    target_node = None
+
+    for node in nodes:
+        text = str(node.text_content())
+        if text.endswith("ongoing previews") or text.endswith("full preview"):
+            target_node = node
+            break
+
+    url = "https://scryfall.com" + target_node.attrib["href"]
 
     mc.add("SCRYFALL_LATEST_PROMO", url, time=60 * 60 * 24)
 

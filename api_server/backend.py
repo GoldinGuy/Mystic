@@ -1,4 +1,4 @@
-from . import cur, mc
+from . import cur, mc, youtube
 import requests
 import lxml.html
 
@@ -81,3 +81,14 @@ def fetch_scryfall_latest_promo():
     mc.add("SCRYFALL_LATEST_PROMO_ONGOING", ongoing, time=60 * 60 * 24)
 
     return {"url": url, "ongoing": ongoing}
+
+
+def fetch_youtube_uploads(page_token=None):
+    request = youtube.playlistItems().list(
+        part="snippet",
+        playlistId="UUVmqfvWsKeFaMGY68CbcVVQ",
+        maxResults=50,
+        pageToken=page_token,
+    )
+    response = request.execute()
+    return response

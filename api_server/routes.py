@@ -29,3 +29,9 @@ def articles_by_site(site):
 @app.route("/scryfall-promo-set")
 def scryfall_promo_set():
     return json.dumps(backend.fetch_scryfall_latest_promo())
+
+
+@app.route("/videos")
+def videos():
+    page_token = request.args.get("page_token")
+    return json.dumps(backend.fetch_youtube_uploads(page_token))

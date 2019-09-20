@@ -5,3 +5,4 @@ flask
 flask-cors
 gunicorn
 dateparser
+google-api-python-client

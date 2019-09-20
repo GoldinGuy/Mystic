@@ -14,7 +14,7 @@ gunicorn = "*"
 flask-cors = "*"
 dateparser = "*"
 python-binary-memcached = "*"
-
+google-api-python-client = "*"
 
 [requires]
 python_version = "3.7"

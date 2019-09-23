@@ -105,7 +105,7 @@ def fetch_youtube_uploads(page_token=None):
     for channel in YOUTUBE_CHANNELS:
         batch.add(
             youtube.playlistItems().list(
-                part="snippet", playlistId=channel, maxResults=4, pageToken=page_token
+                part="snippet", playlistId=channel, maxResults=2, pageToken=page_token
             ),
             callback=functools.partial(cb, this_counter),
         )

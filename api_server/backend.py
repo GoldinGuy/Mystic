@@ -2,6 +2,7 @@ from . import cur, mc, youtube, YOUTUBE_CHANNELS
 import requests
 import lxml.html
 import functools
+import itertools
 
 
 def retrieve_articles_from(site, count=50, page=0):
@@ -114,5 +115,9 @@ def fetch_youtube_uploads(page_token=None):
     return {
         "kind": "youtube",
         "nextPageToken": global_youtube_response[this_counter][0]["nextPageToken"],
-        "items": list(map(lambda x: x["items"], global_youtube_response[this_counter])),
+        "items": list(
+            itertools.chain.from_iterable(
+                map(lambda x: x["items"], global_youtube_response[this_counter])
+            )
+        ),
     }

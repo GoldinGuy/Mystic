@@ -1,6 +1,7 @@
-from . import cur, mc, youtube
+from . import cur, mc, youtube, YOUTUBE_CHANNELS
 import requests
 import lxml.html
+import functools
 
 
 def retrieve_articles_from(site, count=50, page=0):
@@ -83,12 +84,35 @@ def fetch_scryfall_latest_promo():
     return {"url": url, "ongoing": ongoing}
 
 
+# TODO: can these globals be removed?
+global_youtube_response = {}
+global_counter = 0
+
+
+def cb(c, request_id, response, exception):
+    if global_youtube_response.get(c) is None:
+        global_youtube_response[c] = []
+    global_youtube_response[c].append(response)
+
+
 def fetch_youtube_uploads(page_token=None):
-    request = youtube.playlistItems().list(
-        part="snippet",
-        playlistId="UUVmqfvWsKeFaMGY68CbcVVQ",
-        maxResults=50,
-        pageToken=page_token,
-    )
-    response = request.execute()
-    return response
+    global global_counter
+
+    this_counter = global_counter
+    global_counter += 1
+
+    batch = youtube.new_batch_http_request()
+    for channel in YOUTUBE_CHANNELS:
+        batch.add(
+            youtube.playlistItems().list(
+                part="snippet", playlistId=channel, maxResults=4, pageToken=page_token
+            ),
+            callback=functools.partial(cb, this_counter),
+        )
+    batch.execute()
+
+    return {
+        "kind": "youtube",
+        "nextPageToken": global_youtube_response[this_counter][0]["nextPageToken"],
+        "items": list(map(lambda x: x["items"], global_youtube_response[this_counter])),
+    }

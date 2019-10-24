@@ -5,7 +5,7 @@ import functools
 import itertools
 
 
-def retrieve_articles_from(site, count=50, page=0):
+def retrieve_articles_from(site, count=51, page=0):
     cur.execute(
         "SELECT title, url, date, image_url, site_name, site_url, author_name, author_url, description "
         "FROM articles WHERE LOWER(site_name) = %s ORDER BY date DESC, id ASC LIMIT %s OFFSET %s;",
@@ -15,7 +15,7 @@ def retrieve_articles_from(site, count=50, page=0):
     return fetch_requested_articles()
 
 
-def retrieve_articles_from_multiple(sites, count=50, page=0):
+def retrieve_articles_from_multiple(sites, count=51, page=0):
     cur.execute(
         "SELECT title, url, date, image_url, site_name, site_url, author_name, author_url, description "
         "FROM articles WHERE LOWER(site_name) in %s ORDER BY date DESC, id ASC LIMIT %s OFFSET %s;",
@@ -25,7 +25,7 @@ def retrieve_articles_from_multiple(sites, count=50, page=0):
     return fetch_requested_articles()
 
 
-def retrieve_articles(count=50, page=0):
+def retrieve_articles(count=51, page=0):
     cur.execute(
         "SELECT title, url, date, image_url, site_name, site_url, author_name, author_url, description "
         "FROM articles ORDER BY date DESC, id ASC LIMIT %s OFFSET %s;",

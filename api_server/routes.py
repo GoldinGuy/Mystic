@@ -1,8 +1,10 @@
 from flask import request
 import json
+import random
 
 from . import backend
 from . import app
+from . import images_list
 
 
 @app.route("/articles")
@@ -35,3 +37,17 @@ def scryfall_promo_set():
 def videos():
     page_token = request.args.get("page_token")
     return json.dumps(backend.fetch_youtube_uploads(page_token))
+
+
+@app.route("/random_art")
+def random_art():
+    count = int(request.args.get("count", 1))
+    count = min(count, 100)
+    return json.dumps(
+        list(
+            map(
+                lambda c: "https://img.scryfall.com/cards/art_crop/front/" + c,
+                random.choices(images_list, k=count),
+            )
+        )
+    )

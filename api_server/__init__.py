@@ -5,7 +5,7 @@ from flask import Flask
 from flask_cors import CORS
 import googleapiclient.discovery
 
-__all__ = ["cur", "app", "mc", "youtube", " YOUTUBE_CHANNELS"]
+__all__ = ["cur", "app", "mc", "youtube", "images_list", "YOUTUBE_CHANNELS"]
 
 DATABASE_URL = os.environ["DATABASE_URL"]
 YOUTUBE_API_KEY = os.environ["YOUTUBE_API_KEY"]
@@ -15,6 +15,8 @@ conn = psycopg2.connect(DATABASE_URL)  # , sslmode="require")
 cur = conn.cursor()
 
 youtube = googleapiclient.discovery.build("youtube", "v3", developerKey=YOUTUBE_API_KEY)
+
+images_list = open("images.txt").read().splitlines()
 
 mc = bmemcached.Client(
     os.environ.get("MEMCACHEDCLOUD_SERVERS").split(","),

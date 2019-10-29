@@ -2,7 +2,6 @@ from typing import List
 import lxml.html
 from datetime import datetime
 import requests
-import re
 
 from .types import ScraperBase, Article
 
@@ -27,6 +26,16 @@ class CardKingdomScraper(ScraperBase):
         articles = []
 
         for post in posts:
+            tags = post.xpath("div/header/p/span[3]/a/text()")
+            # remove promos
+            skip = False
+            for tag in tags:
+                if tag.strip() == "Giveaway":
+                    skip = True
+                    break
+            if skip:
+                continue
+
             title_node = post.xpath("div/header/h2/a")[0]
             title = title_node.text
             url = title_node.attrib["href"]

@@ -1,5 +1,6 @@
 from typing import List
 from datetime import datetime
+from threading import Thread
 import lxml.html
 import requests
 import re
@@ -28,6 +29,7 @@ class WizardsScraper(ScraperBase):
             )
         ).json()
         articles = []
+        threads = []
 
         for entry in content["data"]:
             content = lxml.html.fromstring(entry)
@@ -35,11 +37,12 @@ class WizardsScraper(ScraperBase):
             link_node = content.xpath("//a")[0]
             url = BASE_URL + link_node.attrib["href"]
 
+            category = content.xpath('//div[@class="text"]/h4/span')[0].text
+            if category == "Wallpaper":
+                continue
+
             body_node = content.xpath('//div[@class="text"]/div[@class="title"]')[0]
             title = body_node.xpath("h3")[0].text
-            desc = content.xpath('//div[@class="text"]/div[@class="description"]')[
-                0
-            ].text
             author_name = body_node.xpath('p/span[@class="author"]')[0].text[3:]
 
             date_node = body_node.xpath('p/span[@class="date"]')[0]
@@ -61,9 +64,34 @@ class WizardsScraper(ScraperBase):
                 BASE_URL,
                 author_name,
                 None,
-                desc,
+                None,
             )
 
             articles.append(article)
+            t = WizardsArticleFetcher(url)
+            t.start()
+            threads.append(t)
+
+        for (article, thread) in zip(articles, threads):
+            thread.join()
+            if thread.result is None:
+                continue
+            article.description = thread.result
 
         return articles
+
+
+class WizardsArticleFetcher(Thread):
+    def __init__(self, url: str):
+        self.url = url
+        self.result = None
+        super(WizardsArticleFetcher, self).__init__()
+
+    @staticmethod
+    def fetch_article_info(url: str) -> (str):
+        content = lxml.html.fromstring(requests.get(url).text)
+
+        return content.xpath('//meta[@name="description"]')[0].attrib["content"]
+
+    def run(self):
+        self.result = self.fetch_article_info(self.url)

@@ -1,7 +1,7 @@
 import json
 import sys
 
-exluded_ids = open("exluded-ids.txt").read().splitlines()
+excluded_ids = open("excluded_ids.txt").read().splitlines()
 
 cards = json.load(sys.stdin)
 for card in cards:
@@ -21,7 +21,7 @@ for card in cards:
 		continue
 	if not card["highres_image"]:
 		continue
-	if card["id"] in exluded_ids:
+	if card["id"] in excluded_ids:
 		continue
 	if card.get("promo_types") is not None:
 		if "datestamped" in card["promo_types"]:

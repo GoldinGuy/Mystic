@@ -49,7 +49,11 @@ class CardKingdomScraper(ScraperBase):
 
             author_name = post.xpath("div/header/p/span/text()")[0][1:]
 
-            img_url = post.xpath("div/a/img")[0].attrib["src"]
+            img_node = post.xpath("div/a/img")
+            if img_node is None:
+                img_url = None
+            else:
+                img_url = img_node[0].attrib["src"]
 
             article = Article(
                 title,

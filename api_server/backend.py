@@ -3,6 +3,7 @@ import requests
 import lxml.html
 import functools
 import itertools
+import json
 
 
 def retrieve_articles_from(site, count=51, page=0):
@@ -97,6 +98,10 @@ def cb(c, request_id, response, exception):
 
 
 def fetch_youtube_uploads(page_token=None):
+    youtube_page_cached = mc.get("YOUTUBE_PAGE_" + str(page_token))
+    if youtube_page_cached is not None:
+        return json.loads(youtube_page_cached)
+
     global global_counter
 
     this_counter = global_counter
@@ -112,7 +117,7 @@ def fetch_youtube_uploads(page_token=None):
         )
     batch.execute()
 
-    return {
+    data = {
         "kind": "youtube",
         "nextPageToken": global_youtube_response[this_counter][0]["nextPageToken"],
         "items": list(
@@ -121,3 +126,7 @@ def fetch_youtube_uploads(page_token=None):
             )
         ),
     }
+    mc.add("YOUTUBE_PAGE_" + str(page_token), json.dumps(data), time=60 * 30)
+    del global_youtube_response[this_counter]
+
+    return data

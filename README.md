@@ -18,7 +18,10 @@ Install dependencies with:
 
     pip3 install -r requirements.txt -U
     
-[Mystic Article Content (last 24 hours)](https://mystic-api-test.herokuapp.com/articles)
+[Articles Json (last 24 hours)](https://mystic-api-test.herokuapp.com/articles)
+
+
+[Videos Json](https://mystic-api-test.herokuapp.com/videos)
 
 
 [Example Site Using Mystic API ](https://mtgmystic.com/)

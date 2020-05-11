@@ -28,7 +28,7 @@ class EDHRECScraper(ScraperBase):
 
             meta_node = post.xpath('p[@class="blog-post-meta"]')[0]
             date = meta_node.text[:-9]
-            # Sometimes there's no date
+            # For when there's no date
             if date.strip() == "":
                 date = self.extract_date_from_article(url)
             date = datetime.strptime(date, "%B %d, %Y")

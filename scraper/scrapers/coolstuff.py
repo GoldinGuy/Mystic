@@ -13,14 +13,15 @@ class CoolStuffScraper(ScraperBase):
     SITE_NAME = "CoolStuffInc"
 
     def scrape_articles(self, page=1) -> List[Article]:
-        # server rejects the default `requests` UA
+        # when the server rejects the default `requests` UA
         content = requests.get(
             ARTICLES_TEMPLATE.format(page),
             headers={"User-Agent": "Chrome/76.0.3809.110"},
         ).text
         content = lxml.html.fromstring(content)
 
-        posts = content.xpath('//ul[@class="gm-article-preview-list column"]/li')
+        posts = content.xpath(
+            '//ul[@class="gm-article-preview-list column"]/li')
 
         articles = []
 

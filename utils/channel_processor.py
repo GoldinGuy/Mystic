@@ -3,7 +3,7 @@ import os
 import googleapiclient.discovery
 import googleapiclient.errors
 
-# Parses the channels list and prints an env var containing all the upload playlists
+# Parses the channels list and prints an env var containing all the upload playlists from youtube
 
 API_KEY = os.environ["YOUTUBE_API_KEY"]
 
@@ -27,7 +27,8 @@ def main():
         except:
             pass
 
-    youtube = googleapiclient.discovery.build("youtube", "v3", developerKey=API_KEY)
+    youtube = googleapiclient.discovery.build(
+        "youtube", "v3", developerKey=API_KEY)
 
     upload_playlists = []
     for channel in channels[1:]:

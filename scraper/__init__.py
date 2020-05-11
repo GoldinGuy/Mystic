@@ -32,7 +32,8 @@ class Scraper:
         interval = os.environ.get("MYSTIC_INTERVAL")
         if interval is not None:
             self.interval = int(interval)
-        self.logger.info("Scraping interval set to {} minutes".format(self.interval))
+        self.logger.info(
+            "Scraping interval set to {} minutes".format(self.interval))
 
         for scraper in ALL_SCRAPERS:
             self.scrapers.append(scraper())
@@ -41,7 +42,7 @@ class Scraper:
         """
         Run the scraper.
 
-        This will continuously check sites and update the database
+        This will continuously check sites and update the database of articles and videos
         """
 
         while True:
@@ -90,11 +91,13 @@ class Scraper:
             print("#", article.title)
             print("  url    =", article.url)
             print("  image  =", article.image_url)
-            print("  author = {} ({})".format(article.author_name, article.author_url))
+            print("  author = {} ({})".format(
+                article.author_name, article.author_url))
             if article.description is not None:
                 print("  desc   =", article.description.splitlines()[0])
             print("  date   =", article.date)
-            print("  site   = {} ({})".format(article.site_name, article.site_url))
+            print("  site   = {} ({})".format(
+                article.site_name, article.site_url))
             print()
 
         if os.environ.get("MYSTIC_WRITE_TO_DB") is not None:

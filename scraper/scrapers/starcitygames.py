@@ -14,7 +14,7 @@ class StarCityGamesScraper(ScraperBase):
     def scrape_articles_since(self, date: datetime) -> List[Article]:
         return self.scrape_articles()
 
-    # TODO: Make actually do paging
+    # TODO: actually do paging
     def scrape_articles(self, page=1) -> List[Article]:
         content = lxml.html.fromstring(
             requests.get("http://www.starcitygames.com/tags/Select/").text
@@ -34,7 +34,8 @@ class StarCityGamesScraper(ScraperBase):
             author_name = header_node.xpath('p[@class="premium_author"]')[
                 0
             ].text.strip()
-            author_url = post.xpath('footer/div[@class="right"]/a')[0].attrib["href"]
+            author_url = post.xpath(
+                'footer/div[@class="right"]/a')[0].attrib["href"]
 
             if (
                 header_node.xpath('p[@class="search_tag"]/img')[0]
@@ -43,7 +44,8 @@ class StarCityGamesScraper(ScraperBase):
             ):
                 continue
 
-            date_raw = header_node.xpath('p[@class="tag_article_date"]')[0].text
+            date_raw = header_node.xpath(
+                'p[@class="tag_article_date"]')[0].text
 
             desc = post.xpath("p")[0].text_content()
 

@@ -86,7 +86,7 @@ def fetch_scryfall_latest_promo():
     return {"url": url, "ongoing": ongoing}
 
 
-# TODO: can these globals be removed?
+# TODO: is it possible to remove these globals?
 global_youtube_response = {}
 global_counter = 0
 
@@ -122,7 +122,8 @@ def fetch_youtube_uploads(page_token=None):
         "nextPageToken": global_youtube_response[this_counter][0]["nextPageToken"],
         "items": list(
             itertools.chain.from_iterable(
-                map(lambda x: x["items"], global_youtube_response[this_counter])
+                map(lambda x: x["items"],
+                    global_youtube_response[this_counter])
             )
         ),
     }

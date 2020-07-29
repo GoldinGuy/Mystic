@@ -1,5 +1,7 @@
 # Mystic
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/256b0f53-8639-4bc7-b7b1-447b7dd96380/deploy-status)](https://app.netlify.com/sites/cocky-kilby-84e195/deploys)
+
 An API that scrapes data for Magic the Gathering content and returns it in json form. Our goal is to support content creators big and small, and to provide a resource that other MTG fans can use to create awesome stuff. We collect URL links, author names, images, and other relevant information from articles, videos, and podcasts.
 
 The API also returns random mtg art for when content does not return a thumbnail image, and other data from Scryfall such as their currently featured set.
